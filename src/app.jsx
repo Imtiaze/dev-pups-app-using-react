@@ -1,8 +1,9 @@
 import ReactDOM from 'react-dom/client'
+import './app.css'
 
 function App() {
     return (
-        <h1>Hello React and Vite</h1>
+        <h1 className='font-mono text-4xl'>Hello React and Vite</h1>
     )
 }
 

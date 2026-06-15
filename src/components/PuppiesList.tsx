@@ -5,15 +5,18 @@ import { LikeToggle } from "./LikeToggle";
 export function PuppiesList({ 
   puppies, 
   liked, 
-  setLiked 
+  setLiked,
+  query
 }: {   
-  puppies: Puppy[]; 
-  liked: Puppy['id'][];
-  setLiked: Dispatch<SetStateAction<Puppy['id'][]>>;
+  puppies: Puppy[]
+  liked: Puppy['id'][]
+  setLiked: Dispatch<SetStateAction<Puppy['id'][]>>
+  query: string
 }) {
   return (
+
     <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {puppies.map((puppy) => (
+      {puppies.filter((puppy) => puppy.name.toLowerCase().includes(query.toLowerCase())).map((puppy) => (
         <PuppyCard key={puppy.id} puppy={puppy} liked={liked} setLiked={setLiked} />
       ))}
     </ul>

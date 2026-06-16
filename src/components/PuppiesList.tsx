@@ -6,18 +6,21 @@ export function PuppiesList({
   puppies, 
   liked, 
   setLiked,
-  query
+  searchQuery,
 }: {   
   puppies: Puppy[]
   liked: Puppy['id'][]
   setLiked: Dispatch<SetStateAction<Puppy['id'][]>>
-  query: string
+  searchQuery: string
 }) {
   return (
 
     <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {puppies.filter((puppy) => puppy.name.toLowerCase().includes(query.toLowerCase())).map((puppy) => (
-        <PuppyCard key={puppy.id} puppy={puppy} liked={liked} setLiked={setLiked} />
+      {
+        puppies
+          .filter((puppy) => puppy.vibe.toLowerCase().includes(searchQuery.toLowerCase()))
+            .map((puppy) => (
+              <PuppyCard key={puppy.id} puppy={puppy} liked={liked} setLiked={setLiked} />
       ))}
     </ul>
   );

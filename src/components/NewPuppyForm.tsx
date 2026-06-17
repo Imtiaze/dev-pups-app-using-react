@@ -1,7 +1,32 @@
-export function NewPuppyForm() {
+import { Dispatch, SetStateAction, useState } from "react";
+import { Puppy } from "../types";
+
+export function NewPuppyForm({ 
+  puppies,  
+  setPuppies
+
+  }: { 
+    puppies: Puppy[],
+    setPuppies: Dispatch<SetStateAction<Puppy[]>> 
+  }) {
+
+    const [name, setName] = useState('');
+    const [trait, setTrait] = useState('');
+
     return (
         <div className="mt-12 flex items-center justify-between bg-white p-8 shadow ring ring-black/5">
-        <form className="mt-4 flex w-full flex-col items-start gap-4">
+        <form 
+          action={(formData: FormData) => {
+            const newPuppy: Puppy = {
+              id: puppies.length + 1,
+              name: formData.get('name')  as string,
+              vibe: formData.get('trait') as string,
+              imagePath: `images/${puppies.length + 1}.jpg` 
+            }
+            setPuppies([...puppies, newPuppy]);
+          }}
+          className="mt-4 flex w-full flex-col items-start gap-4"
+        >
           <div className="grid w-full gap-6 md:grid-cols-3">
             <fieldset className="flex w-full flex-col gap-1">
               <label htmlFor="name">Name</label>
@@ -10,6 +35,8 @@ export function NewPuppyForm() {
                 id="name"
                 type="text"
                 name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </fieldset>
             <fieldset className="flex w-full flex-col gap-1">
@@ -19,6 +46,8 @@ export function NewPuppyForm() {
                 id="trait"
                 type="text"
                 name="trait"
+                value={trait}
+                onChange={(e) => setTrait(e.target.value)}
               />
             </fieldset>
             <fieldset

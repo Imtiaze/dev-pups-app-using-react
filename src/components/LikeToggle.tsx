@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, LoaderCircle } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Puppy } from "../types";
 
@@ -12,25 +12,39 @@ export function LikeToggle({
         setLiked: Dispatch<SetStateAction<Puppy['id'][]>>
     }) {
 
+    const [isLoading, setIsLoading] = useState(false);
 
     return (
         <button 
             className="group" 
             onClick={() => {
-                if (liked.includes(id)) {
-                    setLiked(liked.filter((likedId) => likedId !== id))
-                } else {
-                    setLiked([...liked, id])
-                }
+
+                setIsLoading(true);
+                setTimeout(() => {
+                    if (liked.includes(id)) {
+                        setLiked(liked.filter((likedId) => likedId !== id))
+                    } else {
+                        setLiked([...liked, id])
+                    }
+                    setIsLoading(false);
+                }, 1500)
+
             }}
         >
-            <Heart 
-                className={
-                    liked.includes(id)
-                        ? "fill-pink-500 stroke-none"
-                        : "stroke-slate-200 group-hover:stroke-slate-300"
-                    }
-            />
+            { 
+                isLoading 
+                    ? <LoaderCircle className="animate-spin stroke-slate-300" />
+                    : (
+                        <Heart 
+                            className={
+                                liked.includes(id)
+                                    ? "fill-pink-500 stroke-none"
+                                    : "stroke-slate-200 group-hover:stroke-slate-300"
+                                }
+                        />
+                    )
+
+            }
         </button>
     )
 }

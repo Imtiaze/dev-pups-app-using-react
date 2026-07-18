@@ -19,13 +19,14 @@ export function NewPuppyForm({
         <form 
           action={ async (formData: FormData) => {
 
+            // Waiting form for 1.5 second
             await new Promise((resolve) => setTimeout(resolve, 1500))
 
             const newPuppy: Puppy = {
               id: puppies.length + 1,
               name: formData.get('name')  as string,
               vibe: formData.get('trait') as string,
-              imagePath: `images/${puppies.length + 1}.jpg` 
+              imagePath: `images/${Math.floor(Math.random() * 16) + 7}.jpg` 
             }
             setPuppies([...puppies, newPuppy]);
           }}

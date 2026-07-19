@@ -43,25 +43,29 @@ function Main() {
 function ApiPuppies() {
 
 	const [apiPuppies, getApiPuppies] = useState<[]>([]);
-	const [apiLoader, getApiLoader] = useState<Boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string>('');
 
 	useEffect(() => {
 		async function getPuppies() {
+			setIsLoading(true);
 			try {
 				const response = await fetch('http://127.0.0.1:8000/api/puppies');
 
 				if (!response.ok) {
-					throw new Error("Network response is no ok");
+					const errorData = await response.json();
+					setError(`${errorData.message}: ${errorData.details}`)
+					throw new errorData;
 				}
 
-				const data = await response.json();
+				const result = await response.json();
 
-				getApiPuppies(data);
+				getApiPuppies(result.data);
 
-				getApiLoader(false);
 			} catch (error) {
 				console.log(error);
 			}
+			setIsLoading(false);
 		}
 
 		getPuppies();
@@ -71,11 +75,11 @@ function ApiPuppies() {
 
 	return (
 		<div className="bg-white p-6 mt-12 shadow ring ring-black/5">
-			{
-				apiLoader 
-					? (<LoaderCircle className="animate-spin stroke-slate-300" />)
-					: (<pre>{JSON.stringify(apiPuppies, null, 2)}</pre>)
-			}
+			{ isLoading && <LoaderCircle className="animate-spin stroke-slate-300" />}
+			{apiPuppies.length > 0	&& (
+				<pre>{JSON.stringify(apiPuppies, null, 2)}</pre>
+			)}
+			{ error && <p className="text-red-500">{error}</p>}
 		</div>
 	);
 }

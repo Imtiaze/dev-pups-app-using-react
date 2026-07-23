@@ -1,6 +1,7 @@
 import { Heart, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { Puppy } from "../types";
+import { toggleLikedStatus } from "../queries";
 
 export function LikeToggle({ 
         puppy
@@ -13,17 +14,15 @@ export function LikeToggle({
     return (
         <button 
             className="group" 
-            onClick={() => {
+            onClick={ async () => {
 
                 setIsLoading(true);
-                // setTimeout(() => {
-                //     if (liked.includes(id)) {
-                //         setLiked(liked.filter((likedId) => likedId !== id))
-                //     } else {
-                //         setLiked([...liked, id])
-                //     }
-                //     setIsLoading(false);
-                // }, 1500)
+
+                const updatedPuppy = await toggleLikedStatus(puppy.id);
+
+                console.log(updatedPuppy);
+
+                setIsLoading(false);
 
             }}
         >
